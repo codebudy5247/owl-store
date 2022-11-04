@@ -1,0 +1,90 @@
+import * as axios from "axios";
+
+const apiURL =
+  "https://owl-store-api.onrender.com/api" || "http://localhost:5000/api";
+
+interface ResponseData {
+  data: any;
+  status: any;
+}
+
+function normalizeServerResponse(serverResponse: any) {
+  let response: ResponseData = {
+    data: serverResponse.data,
+    status: serverResponse.status,
+  };
+
+  return response;
+}
+
+function normalizeServerError(serverResponse: any) {
+  let response: ResponseData = {
+    data: serverResponse.message,
+    status: serverResponse.status,
+  };
+
+  return response;
+}
+
+//signup
+export async function signUp(
+  username: string,
+  email: string,
+  password: string
+) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/register`,
+      data: {
+        username: username,
+        email_id: email,
+        password: password,
+      },
+    };
+
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//signin
+export async function signIn(email: string, password: string) {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/auth/login`,
+      data: {
+        email_id: email,
+        password: password,
+      },
+    };
+
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//get all cards
+export async function getCards() {
+  try {
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/card`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
