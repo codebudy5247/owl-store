@@ -1,8 +1,8 @@
 import * as axios from "axios";
 
 const apiURL =
-  "https://owl-store-api.onrender.com/api" || "http://localhost:5000/api";
-
+  "http://localhost:5000/api" || "https://owl-store-api.onrender.com/api";
+  
 interface ResponseData {
   data: any;
   status: any;

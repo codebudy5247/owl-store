@@ -47,7 +47,7 @@ const TableComp = (props: any) => {
         <TableHead>
           <TableRow>
             <TableCell padding="checkbox">
-              <Checkbox/>
+              {/* <Checkbox/> */}
             </TableCell>
             {TABLE_HEAD.map((headCell) => (
               <TableCell
@@ -64,7 +64,7 @@ const TableComp = (props: any) => {
             <>
               <TableRow key={card?._id}>
                 <TableCell padding="checkbox">
-                  <Checkbox />
+                  {/* <Checkbox /> */}
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2" noWrap>

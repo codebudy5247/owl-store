@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const Header = (props:any) => {
+const Header = (props: any) => {
   return (
     <Box
       sx={{
@@ -13,12 +13,18 @@ const Header = (props:any) => {
         p: 10,
         // borderBottomLeftRadius: "550px",
         // borderBottomRightRadius: "550px",
-        borderRadius:'50%'
+        borderRadius: "50%",
       }}
     >
-      <Box sx={{mt:'78px'}}>
-        <Typography variant="h3">{props?.title}</Typography>
-        <Typography variant="body2" sx={{textAlign:'center'}}>{props?.subtitle}</Typography>
+      <Box sx={{ mt: "78px" }}>
+        <Typography
+          sx={{ typography: { sm: "h3", xs: "h5" }, fontWeight: "bold",textAlign: "center" }}
+        >
+          {props?.title}
+        </Typography>
+        <Typography variant="body1" sx={{ textAlign: "center" }}>
+          {props?.subtitle}
+        </Typography>
       </Box>
     </Box>
   );

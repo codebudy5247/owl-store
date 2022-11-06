@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Typography, Box, TextField, Stack, Link } from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GoogleIcon from "@mui/icons-material/Google";
 import * as Api from "../../services/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,6 +8,18 @@ import { useNavigate } from "react-router-dom";
 import logoImg from "../../images/logo.png";
 import layout from "../../images/layout.png";
 import Image from "../../components/Image";
+import { styled } from "@mui/material/styles";
+import Button, { ButtonProps } from "@mui/material/Button";
+import CircularProgress from '@mui/material/CircularProgress';
+
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: "#EE2B70",
+  backgroundColor: "#FDE7EF",
+  "&:hover": {
+    backgroundColor: "#EE2B70",
+    color: "white",
+  },
+}));
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -53,8 +63,20 @@ const Signup = () => {
   };
   return (
     <>
-      <Box sx={{ width: "100%", height: "100%", display: "flex" }}>
-        <Box sx={{ width: "50%", height: "100vh", backgroundColor: "#F8AAC6" }}>
+      <Box
+        sx={{
+          width: { xs: "fix-layout", sm: "100%" },
+          height: "100%",
+          display: { sm: "flex" },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "fix-layout", sm: "50%" },
+            height: { xs: "fix-layout", sm: "100vh" },
+            backgroundColor: "#F8AAC6",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -83,7 +105,7 @@ const Signup = () => {
         </Box>
         <Box
           sx={{
-            width: "50%",
+            width: { xs: "fix-layout", sm: "50%" },
             height: "fix-layout",
             p: 5,
           }}
@@ -96,7 +118,7 @@ const Signup = () => {
             }}
           >
             <Typography>
-              Create a free account on devias and get started 👋
+              Create a free account on device and get started 👋
             </Typography>
           </Box>
           <Box
@@ -117,9 +139,9 @@ const Signup = () => {
             }}
           >
             <Stack
-              direction={{ xs: "column", sm: "column" }}
-              spacing={3}
-              sx={{ width: "60%" }}
+             direction={{ xs: "column", sm: "column" }}
+             spacing={3}
+             sx={{ width: { xs: "100%", sm: "60%" } }}
             >
               <TextField
                 required={true}
@@ -207,9 +229,8 @@ const Signup = () => {
               spacing={3}
               sx={{ width: "60%" }}
             >
-              <LoadingButton
+              <ColorButton
                 fullWidth
-                loading={loading}
                 size="large"
                 type="submit"
                 variant="contained"
@@ -217,8 +238,8 @@ const Signup = () => {
                 onClick={onClickSubmit}
                 // sx={{backgroundColor:"#F8AAC6"}}
               >
-                SIGNUP
-              </LoadingButton>
+                {loading ? <CircularProgress /> : <>SIGNUP</>} 
+              </ColorButton>
             </Stack>
           </Box>
           <Box

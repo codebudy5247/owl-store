@@ -12,6 +12,7 @@ import layout from "../../images/layout.png";
 import Image from "../../components/Image";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -55,8 +56,20 @@ const Signin = () => {
   };
   return (
     <>
-      <Box sx={{ width: "100%", height: "100%", display: "flex" }}>
-        <Box sx={{ width: "50%", height: "100vh", backgroundColor: "#F8AAC6" }}>
+      <Box
+        sx={{
+          width: { xs: "fix-layout", sm: "100%" },
+          height: "100%",
+          display: { sm: "flex" },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: "fix-layout", sm: "50%" },
+            height: { xs: "fix-layout", sm: "100vh" },
+            backgroundColor: "#F8AAC6",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -85,7 +98,7 @@ const Signin = () => {
         </Box>
         <Box
           sx={{
-            width: "50%",
+            width: { xs: "fix-layout", sm: "50%" },
             height: "fix-layout",
             p: 5,
           }}
@@ -119,7 +132,7 @@ const Signin = () => {
             <Stack
               direction={{ xs: "column", sm: "column" }}
               spacing={3}
-              sx={{ width: "60%" }}
+              sx={{ width: { xs: "100%", sm: "60%" } }}
             >
               <TextField
                 required={true}
@@ -182,9 +195,8 @@ const Signin = () => {
               spacing={3}
               sx={{ width: "60%" }}
             >
-              <LoadingButton
+              <ColorButton
                 fullWidth
-                loading={loading}
                 size="large"
                 type="submit"
                 variant="contained"
@@ -192,8 +204,8 @@ const Signin = () => {
                 disabled={!email || !password}
                 // sx={{backgroundColor:"#F8AAC6"}}
               >
-                SIGNIN
-              </LoadingButton>
+               {loading ? <CircularProgress /> : <>SIGNIN</>} 
+              </ColorButton>
             </Stack>
           </Box>
           <Box

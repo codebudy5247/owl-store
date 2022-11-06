@@ -8,19 +8,27 @@ const Footer = () => {
     <Box
       sx={{
         backgroundColor: "#FDE7EF",
-        p: "10px 40px 10px 40px",
+        p: {xs:"8px 10px 8px 10px",sm:"10px 40px 10px 40px"},
       }}
     >
       <Box>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            p: "10px 50px 10px 50px",
+            display: { sm: "flex" },
+            justifyContent: { sm: "space-between" },
+            p: {xs:"5px 10px 5px 10px",sm:"10px 50px 10px 50px"},
           }}
         >
           <Box>
-            <Image disabledEffect src={logoImg}  sx={{ width: 'fix-layout', height: '46px' }}/>
+            <Image
+              disabledEffect
+              src={logoImg}
+              sx={{
+                width: "fix-layout",
+                height: { xs: "fix-layout", sm: "46px" },
+                // height:'46px'
+              }}
+            />
           </Box>
           <Box sx={{ display: "flex", mt: "12px" }}>
             <Link variant="h6" color="inherit" underline="none">
@@ -45,7 +53,7 @@ const Footer = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            p: "10px 50px 10px 50px",
+            p: {xs:"5px 10px 5px 10px",sm:"10px 50px 10px 50px"},
           }}
         >
           <Box>
