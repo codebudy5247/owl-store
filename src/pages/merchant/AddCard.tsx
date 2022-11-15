@@ -1,15 +1,5 @@
-import {
-  Card,
-  Container,
-  Box,
-  Typography,
-  Stack,
-  TextField,
-  Chip,
-  Autocomplete,
-  InputLabel,
-} from "@mui/material";
-import React from "react";
+import { Box, Stack, TextField, Autocomplete } from "@mui/material";
+import React, { useState } from "react";
 import { countries } from "../../_mock/_countries";
 import { USAstates } from "../../_mock/_usStates";
 import { styled } from "@mui/material/styles";
@@ -47,11 +37,58 @@ const levelOption = [
   },
 ];
 const AddCard = () => {
+  const [startDate, setStartDate] = useState(new Date());
   return (
     <>
-      <Stack spacing={2} sx={{mt:2}}>
+      <Stack spacing={2} sx={{ mt: 2 }}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
-          <TextField fullWidth id="base" label="Base" variant="outlined" />
+          <TextField
+            required={true}
+            fullWidth
+            id="base"
+            label="CC Number"
+            variant="outlined"
+          />
+          <TextField
+            type="date"
+            fullWidth
+            id="base"
+            label="Expiry Date"
+            variant="outlined"
+            defaultValue="2017-05-24"
+            InputLabelProps={{ shrink: true, required: true }}
+          />
+          {/* <DateSelector /> */}
+        </Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
+          <TextField
+            required={true}
+            fullWidth
+            id="base"
+            label="CVV"
+            variant="outlined"
+          />
+        </Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
+          <TextField
+            required={true}
+            fullWidth
+            id="base"
+            label="Address"
+            variant="outlined"
+            multiline
+            rows={3}
+          />
+        </Stack>
+
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
+          <TextField
+            required={true}
+            fullWidth
+            id="base"
+            label="Zip Code"
+            variant="outlined"
+          />
           <Autocomplete
             fullWidth
             id="country-select-demo"
@@ -88,38 +125,6 @@ const AddCard = () => {
             )}
           />
         </Stack>
-
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
-          <Autocomplete
-            fullWidth
-            id="country-select-demo"
-            options={classOption}
-            // onChange={onChangeCountryCode}
-            autoHighlight
-            getOptionLabel={(option) => option.label}
-            renderOption={(props, option) => (
-              <Box
-                component="li"
-                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                {...props}
-              >
-                {option.label}
-              </Box>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Class"
-                inputProps={{
-                  ...params.inputProps,
-                  autoComplete: "new-password", // disable autocomplete and autofill
-                }}
-              />
-            )}
-          />
-          <TextField fullWidth id="bins" label="Bins" variant="outlined" />
-        </Stack>
-
         <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
           <Autocomplete
             fullWidth
@@ -140,7 +145,7 @@ const AddCard = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Only for USA"
+                label="States"
                 inputProps={{
                   ...params.inputProps,
                   autoComplete: "new-password", // disable autocomplete and autofill
@@ -148,7 +153,7 @@ const AddCard = () => {
               />
             )}
           />
-          <Autocomplete
+          {/* <Autocomplete
             fullWidth
             id="country-select-demo"
             options={levelOption}
@@ -174,20 +179,73 @@ const AddCard = () => {
                 }}
               />
             )}
+          /> */}
+          <TextField
+            required={true}
+            fullWidth
+            id="zip"
+            label="City"
+            variant="outlined"
           />
         </Stack>
-
         <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
-          <TextField fullWidth id="zip" label="Zip code" variant="outlined" />
-          <TextField fullWidth id="city" label="City" variant="outlined" />
-        </Stack>
-
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
-          <TextField fullWidth id="type" label="Type" variant="outlined" />
-          <TextField
+          {/* <Autocomplete
             fullWidth
-            id="bankname"
-            label="Bank name"
+            id="country-select-demo"
+            options={classOption}
+            // onChange={onChangeCountryCode}
+            autoHighlight
+            getOptionLabel={(option) => option.label}
+            renderOption={(props, option) => (
+              <Box
+                component="li"
+                sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                {...props}
+              >
+                {option.label}
+              </Box>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Class"
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password", // disable autocomplete and autofill
+                }}
+              />
+            )}
+          /> */}
+          <TextField
+            type="date"
+            fullWidth
+            id="dob"
+            label="Date Of Birth"
+            variant="outlined"
+            defaultValue="2017-05-24"
+            InputLabelProps={{ shrink: true, required: true }}
+          />
+          <TextField
+            required={true}
+            fullWidth
+            id="dob"
+            label="SSN"
+            variant="outlined"
+          />
+        </Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
+          <TextField
+            required={true}
+            fullWidth
+            id="zip"
+            label="DL"
+            variant="outlined"
+          />
+          <TextField
+            required={true}
+            fullWidth
+            id="city"
+            label="Other Details"
             variant="outlined"
           />
         </Stack>
