@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Typography, Box, TextField, Stack, Link } from "@mui/material";
-import * as Api from "../../services/api";
+import * as Api from "../../../services/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import logoImg from "../../images/logo.png";
-import layout from "../../images/layout.png";
-import Image from "../../components/Image";
+import logoImg from "../../../images/logo.png";
+import layout from "../../../images/layout.png";
+import Image from "../../../components/Image";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -41,7 +41,7 @@ const Signup = () => {
   const onClickSubmit = async () => {
     setLoading(true);
 
-    const [signUpError, signUpResponse] = await Api.signUp(
+    const [signUpError, signUpResponse] = await Api.signUpSeller(
       username,
       email,
       password
@@ -118,7 +118,7 @@ const Signup = () => {
               alignContent: "center",
             }}
           >
-            <Typography>
+            <Typography variant="h6">
               Create a free account on device and get started 👋
             </Typography>
           </Box>
@@ -130,7 +130,7 @@ const Signup = () => {
               mb: 2,
             }}
           >
-            <Typography>Create Account</Typography>
+            <Typography variant="h6">Create Seller Account</Typography>
           </Box>
           <Box
             sx={{
@@ -140,9 +140,9 @@ const Signup = () => {
             }}
           >
             <Stack
-             direction={{ xs: "column", sm: "column" }}
-             spacing={3}
-             sx={{ width: { xs: "100%", sm: "60%" } }}
+              direction={{ xs: "column", sm: "column" }}
+              spacing={3}
+              sx={{ width: { xs: "100%", sm: "60%" } }}
             >
               <TextField
                 required={true}
@@ -162,7 +162,6 @@ const Signup = () => {
                 variant="outlined"
                 onChange={onChangePassword}
               />
-
             </Stack>
           </Box>
           <Box
@@ -181,13 +180,6 @@ const Signup = () => {
                 sx={{ cursor: "pointer" }}
               >
                 Login
-              </Link>
-              <Link
-                variant="subtitle2"
-                onClick={() => navigate("/register-seller")}
-                sx={{ cursor: "pointer",ml:2 }}
-              >
-               Signup as a seller
               </Link>
             </Typography>
           </Box>
@@ -213,7 +205,7 @@ const Signup = () => {
                 onClick={onClickSubmit}
                 // sx={{backgroundColor:"#F8AAC6"}}
               >
-                {loading ? <CircularProgress /> : <>SIGNUP</>} 
+                {loading ? <CircularProgress /> : <>SIGNUP</>}
               </ColorButton>
             </Stack>
           </Box>
@@ -224,33 +216,7 @@ const Signup = () => {
               alignContent: "center",
               mt: 3,
             }}
-          >
-            {/* <Typography>Or</Typography> */}
-            {/* <Stack
-              direction={{ xs: "column", sm: "column" }}
-              spacing={3}
-              sx={{ width: "60%" }}
-            >
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="outlined"
-                startIcon={<GoogleIcon />}
-              >
-                Signup with Google
-              </LoadingButton>
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="outlined"
-                startIcon={<FacebookIcon />}
-              >
-                Signup with Facebook
-              </LoadingButton>
-            </Stack> */}
-          </Box>
+          ></Box>
         </Box>
       </Box>
       <ToastContainer />

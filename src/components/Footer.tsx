@@ -2,13 +2,27 @@ import { Box, Typography, Link } from "@mui/material";
 import React from "react";
 import Image from "./Image";
 import logoImg from "../images/logo.png";
+import { styled } from "@mui/material/styles";
+import Button, { ButtonProps } from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  color: "#EE2B70",
+  backgroundColor: "#FDE7EF",
+  "&:hover": {
+    backgroundColor: "#EE2B70",
+    color: "white",
+  },
+}));
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const user_role: any = localStorage.getItem("userRole");
   return (
     <Box
       sx={{
         backgroundColor: "#FDE7EF",
-        p: {xs:"8px 10px 8px 10px",sm:"10px 40px 10px 40px"},
+        p: { xs: "8px 10px 8px 10px", sm: "10px 40px 10px 40px" },
       }}
     >
       <Box>
@@ -16,7 +30,7 @@ const Footer = () => {
           sx={{
             display: { sm: "flex" },
             justifyContent: { sm: "space-between" },
-            p: {xs:"5px 10px 5px 10px",sm:"10px 50px 10px 50px"},
+            p: { xs: "5px 10px 5px 10px", sm: "10px 50px 10px 50px" },
           }}
         >
           <Box>
@@ -30,6 +44,20 @@ const Footer = () => {
               }}
             />
           </Box>
+
+          {user_role === "ROLE_SELLER" ? (
+            <></>
+          ) : (
+            <Box sx={{ mt: "12px" }}>
+              <ColorButton
+                onClick={() => navigate("/register-seller")}
+                variant="contained"
+              >
+                Become a seller on OwlStore
+              </ColorButton>
+            </Box>
+          )}
+
           <Box sx={{ display: "flex", mt: "12px" }}>
             <Link variant="h6" color="inherit" underline="none">
               Cards
@@ -53,7 +81,7 @@ const Footer = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            p: {xs:"5px 10px 5px 10px",sm:"10px 50px 10px 50px"},
+            p: { xs: "5px 10px 5px 10px", sm: "10px 50px 10px 50px" },
           }}
         >
           <Box>

@@ -134,6 +134,7 @@ export default function Header() {
   );
 
   const getMenuButtons = () => {
+  const user_role: any = localStorage.getItem("userRole");
     const logout = () => {
       localStorage.removeItem("authToken");
       navigate("/login");
@@ -149,6 +150,22 @@ export default function Header() {
     };
     return (
       <>
+      {user_role === "ROLE_SELLER" ? (
+        <Button
+          sx={{
+            fontFamily: "Open Sans, sans-serif",
+            fontWeight: 500,
+            size: "15px",
+            marginLeft: "18px",
+            color: "black",
+          }}
+          onClick={() => navigate("/merchant-dashboard")}
+        >
+          Dashboard
+        </Button>
+      ):(
+        <></>
+      )}
         <Button
           sx={{
             fontFamily: "Open Sans, sans-serif",
@@ -185,7 +202,7 @@ export default function Header() {
         >
           Billings
         </Button>
-        <Button
+        {/* <Button
           sx={{
             fontFamily: "Open Sans, sans-serif",
             fontWeight: 500,
@@ -195,8 +212,8 @@ export default function Header() {
           }}
         >
           Tickets
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           sx={{
             fontFamily: "Open Sans, sans-serif",
             fontWeight: 500,
@@ -206,7 +223,7 @@ export default function Header() {
           }}
         >
           Rules
-        </Button>
+        </Button> */}
 
         <ColorButton
           variant="contained"

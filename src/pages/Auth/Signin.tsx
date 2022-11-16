@@ -45,8 +45,9 @@ const Signin = () => {
       });
     }
     if (signInResponse) {
-      console.log(signInResponse?.data?.token);
+      console.log(signInResponse);
       localStorage.setItem("authToken", signInResponse?.data?.token);
+      localStorage.setItem("userRole", signInResponse?.data?.oldUser?.role);
       navigate("/");
       toast.success("Login Success !", {
         position: toast.POSITION.TOP_RIGHT,
