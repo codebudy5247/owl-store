@@ -6,6 +6,8 @@ import CardList from '../../components/layouts/CardList'
 import SearchFilter from '../../components/layouts/SearchFilter'
 import Footer from '../../components/Footer'
 import Header from '../../components/layouts/Header'
+import { ToastContainer } from "react-toastify";
+
 const Home = () => {
   return (
     <div>
@@ -17,6 +19,7 @@ const Home = () => {
         <CardList />
         <Footer />
         </Box>
+        <ToastContainer />
     </div>
   )
 }

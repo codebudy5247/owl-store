@@ -11,11 +11,14 @@ import Withdraw from "../src/pages/merchant/withdraw/withdraw";
 import TotalCards from "./pages/Dashboard/TotalCards";
 import SignupSeller from "./pages/merchant/Auth/Signup";
 import Seller from "./guard/Seller";
+import { ToastContainer, toast } from "react-toastify";
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Fragment>
+          
           <Routes>
             <Route path="/" element={<AuthGuard />}>
               <Route path="/" element={<HomePage />} />
