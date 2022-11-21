@@ -27,7 +27,8 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.8",
     "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -54,6 +55,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-lazy-load-image-component": "^1.5.2"
+    "@types/react-lazy-load-image-component": "^1.5.2",
+    "@types/xlsx": "^0.0.36"
   }
 }

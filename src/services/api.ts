@@ -115,7 +115,7 @@ export async function getCards() {
   }
 }
 
-//add to cart
+//Add to cart
 export async function addToCart(itemId: string) {
   try {
     let token: any = localStorage.getItem("authToken");
@@ -136,7 +136,7 @@ export async function addToCart(itemId: string) {
   }
 }
 
-//get cart items
+//Get cart items
 export async function getCartItems() {
   try {
     let token: any = localStorage.getItem("authToken");
@@ -154,7 +154,7 @@ export async function getCartItems() {
   }
 }
 
-//remove cart item
+//Remove cart item
 export async function removeItem(itemId: string) {
   try {
     let token: any = localStorage.getItem("authToken");
