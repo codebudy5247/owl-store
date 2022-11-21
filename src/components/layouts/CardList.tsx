@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Card, Container, Typography } from "@mui/material";
 import TableComp from "../Table";
 import * as Api from "../../services/api";
-import DataTable from "./DataTable";
 const CardList = () => {
   const [cardList, setCardList] = useState<any>([]);
 

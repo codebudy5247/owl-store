@@ -45,19 +45,6 @@ const Footer = () => {
             />
           </Box>
 
-          {user_role === "ROLE_SELLER" ? (
-            <></>
-          ) : (
-            <Box sx={{ mt: "12px" }}>
-              <ColorButton
-                onClick={() => navigate("/register-seller")}
-                variant="contained"
-              >
-                Become a seller on OwlStore
-              </ColorButton>
-            </Box>
-          )}
-
           <Box sx={{ display: "flex", mt: "12px" }}>
             <Link variant="h6" color="inherit" underline="none">
               Cards
@@ -87,6 +74,18 @@ const Footer = () => {
           <Box>
             <Typography variant="subtitle2">2022 © Owl Store</Typography>
           </Box>
+          {user_role === "ROLE_SELLER" ? (
+              <></>
+            ) : (
+              <Box sx={{ mt: "12px" }}>
+                <ColorButton
+                  onClick={() => navigate("/register-seller")}
+                  variant="contained"
+                >
+                  Become a seller on OwlStore
+                </ColorButton>
+              </Box>
+            )}
           <Box sx={{ display: "flex" }}>
             <Typography variant="subtitle2">OwlStore.at</Typography>
             <Typography variant="subtitle2" sx={{ ml: 2 }}>
