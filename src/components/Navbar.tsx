@@ -18,6 +18,7 @@ import Image from "./Image";
 import logoImg from "../../src/images/logo.png";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
+import * as Api from "../services/api";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -53,6 +54,17 @@ export default function Header() {
     mobileView: false,
     drawerOpen: false,
   });
+
+  const [totalCartPrice, setTotalCartPrice] = useState("");
+  useEffect(() => {
+    const init = async () => {
+      const [err, res] = await Api.getCartItems();
+      if (res) {
+        setTotalCartPrice(res?.data?.totalPrice);
+      }
+    };
+    init();
+  }, []);
 
   const { mobileView, drawerOpen } = state;
   useEffect(() => {
@@ -134,7 +146,7 @@ export default function Header() {
   );
 
   const getMenuButtons = () => {
-  const user_role: any = localStorage.getItem("userRole");
+    const user_role: any = localStorage.getItem("userRole");
     const logout = () => {
       localStorage.removeItem("authToken");
       navigate("/login");
@@ -150,23 +162,40 @@ export default function Header() {
     };
     return (
       <>
-      {user_role === "ROLE_SELLER" ? (
-        <Button
-          sx={{
-            fontFamily: "Open Sans, sans-serif",
-            fontWeight: 500,
-            size: "15px",
-            marginLeft: "18px",
-            color: "black",
-          }}
-          onClick={() => navigate("/merchant-dashboard")}
-        >
-          Dashboard
-        </Button>
-      ):(
-        <></>
-      )}
-        <Button
+        {user_role === "ROLE_SELLER" ? (
+          <>
+          <Button
+            sx={{
+              fontFamily: "Open Sans, sans-serif",
+              fontWeight: 500,
+              size: "15px",
+              marginLeft: "18px",
+              color: "black",
+            }}
+            onClick={() => navigate("/merchant-dashboard")}
+          >
+            Dashboard
+          </Button>
+           <Button
+           sx={{
+             fontFamily: "Open Sans, sans-serif",
+             fontWeight: 500,
+             size: "15px",
+             marginLeft: "18px",
+             color: "black",
+           }}
+          //  onClick={onClickCartHandler}
+         >
+           Order
+         </Button>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {user_role === "ROLE_USER" ? (
+          <>
+          <Button
           sx={{
             fontFamily: "Open Sans, sans-serif",
             fontWeight: 500,
@@ -202,28 +231,6 @@ export default function Header() {
         >
           Billings
         </Button>
-        {/* <Button
-          sx={{
-            fontFamily: "Open Sans, sans-serif",
-            fontWeight: 500,
-            size: "15px",
-            marginLeft: "18px",
-            color: "black",
-          }}
-        >
-          Tickets
-        </Button> */}
-        {/* <Button
-          sx={{
-            fontFamily: "Open Sans, sans-serif",
-            fontWeight: 500,
-            size: "15px",
-            marginLeft: "18px",
-            color: "black",
-          }}
-        >
-          Rules
-        </Button> */}
 
         <ColorButton
           variant="contained"
@@ -239,8 +246,13 @@ export default function Header() {
           sx={{ ml: "18px" }}
         >
           {" "}
-          $ 0.00
+          $ {totalCartPrice}
         </ColorButton>
+          </>
+        ):(
+          <></>
+        )}
+        
         <ColorButton variant="contained" sx={{ ml: "18px" }} onClick={logout}>
           <LogoutIcon />
         </ColorButton>

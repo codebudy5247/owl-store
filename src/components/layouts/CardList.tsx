@@ -5,12 +5,13 @@ import * as Api from "../../services/api";
 const CardList = () => {
   const [cardList, setCardList] = useState<any>([]);
 
+  console.log("cardList",cardList);
+  
   useEffect(() => {
     const init = async () => {
       const [err, res] = await Api.getCards();
       if (res) {
-        console.log(res.data.cards);
-        setCardList(res.data.cards);
+        setCardList(res.data);
       }
     };
     init();
@@ -19,7 +20,7 @@ const CardList = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
       <Card sx={{ borderRadius: 5, p: 3 }}>
-        {cardList.length === 0 ? (
+        {cardList?.length === 0 || cardList === undefined ? (
           <Typography
             variant="h4"
             sx={{ textAlign: "center", color: "#EE2B70", fontWeight: 600 }}
@@ -28,7 +29,6 @@ const CardList = () => {
           </Typography>
         ) : (
           <>
-            {/* <DataTable cardList={cardList} /> */}
             <TableComp cardList={cardList} />
           </>
         )}

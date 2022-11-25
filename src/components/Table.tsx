@@ -10,13 +10,15 @@ import {
   TablePagination,
   TableHead,
   TableSortLabel,
+  Box,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import moment from "moment";
 import * as Api from "../services/api";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { Icon } from "@iconify/react";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -37,10 +39,12 @@ const TableComp = (props: any) => {
     { id: "country", label: "Country", alignRight: true },
     { id: "lavel", label: "Lavel", alignRight: true },
     { id: "class", label: "Class", alignRight: true },
-    { id: "extra", label: "Extra", alignRight: true },
+    // { id: "extra", label: "Extra", alignRight: true },
     { id: "price", label: "Price", alignRight: true },
   ];
   const [cartItems, setCartItems] = useState<any>();
+
+  const [disabled, setDisabled] = useState(false);
 
   //Check item is present or not in the cart.
   function checkItem(arr: any, item_id: string) {
@@ -83,6 +87,13 @@ const TableComp = (props: any) => {
     getCart();
   }, []);
 
+  const displayIcon = (type: any) => {
+    if (type === "master")
+      return <Icon icon="logos:mastercard" height={40} width={40} />;
+    if (type === "visa")
+      return <Icon icon="logos:visa" height={40} width={40} />;
+  };
+
   return (
     <>
       <TableContainer sx={{ minWidth: 800 }}>
@@ -92,7 +103,7 @@ const TableComp = (props: any) => {
               <TableCell padding="checkbox">
                 <Checkbox />
               </TableCell>
-              {TABLE_HEAD.map((headCell) => (
+              {TABLE_HEAD?.map((headCell) => (
                 <TableCell key={headCell.id}>
                   <TableSortLabel hideSortIcon>{headCell.label}</TableSortLabel>
                 </TableCell>
@@ -100,35 +111,48 @@ const TableComp = (props: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props?.cardList.map((card: any) => (
+            {props?.cardList?.map((card: any) => (
               <>
                 <TableRow key={card?._id}>
                   <TableCell padding="checkbox">
                     <Checkbox />
                   </TableCell>
+                  <TableCell sx={{ display: "flex" }}>
+                    {displayIcon(card.type)}
+                    <Typography
+                      variant="subtitle2"
+                      noWrap
+                      sx={{ ml: 1, mt: 1 }}
+                    >
+                      {card?.cardNumber?.slice(0, 6)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ p: 2 }}>
+                    <Box
+                      sx={{
+                        backgroundColor: "#FDE7EF",
+                        p: 1,
+                        textAlign: "center",
+                      }}
+                    >
+                      <Typography variant="subtitle2" noWrap>
+                        {moment(card?.base).format("MMMM YY")}
+                      </Typography>
+                    </Box>
+                  </TableCell>
                   <TableCell>
                     <Typography variant="subtitle2" noWrap>
-                      {card?.bin}
+                      {card?.address?.zip}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="subtitle2" noWrap>
-                      {moment(card?.base).format("DD-MM-YYYY,h:mm a")}
+                      {card?.address?.city}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="subtitle2" noWrap>
-                      {card?.zip}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" noWrap>
-                      {card?.city}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" noWrap>
-                      {card?.state}
+                      {card?.address?.state}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -136,7 +160,7 @@ const TableComp = (props: any) => {
                       loading="lazy"
                       width="50"
                       height="25"
-                      src={`https://countryflagsapi.com/png/${card?.country.toLowerCase()}`}
+                      src={`https://countryflagsapi.com/png/${card?.address?.country?.toLowerCase()}`}
                       alt=""
                     />
                   </TableCell>
@@ -148,11 +172,6 @@ const TableComp = (props: any) => {
                   <TableCell>
                     <Typography variant="subtitle2" noWrap>
                       {card?.class}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2" noWrap>
-                      {card?.extraField}
                     </Typography>
                   </TableCell>
                   <TableCell>
