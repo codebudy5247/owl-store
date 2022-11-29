@@ -48,7 +48,7 @@ const headersData = [
   },
 ];
 
-export default function Header() {
+export default function Header( props:any) {
   const navigate = useNavigate();
   const [state, setState] = useState({
     mobileView: false,
@@ -244,9 +244,10 @@ export default function Header() {
           variant="contained"
           startIcon={<AddShoppingCartIcon />}
           sx={{ ml: "18px" }}
+          onClick={() => navigate("/checkout")}
         >
           {" "}
-          $ {totalCartPrice}
+          $ { totalCartPrice}
         </ColorButton>
           </>
         ):(

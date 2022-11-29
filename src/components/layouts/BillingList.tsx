@@ -22,6 +22,8 @@ import { Icon } from "@iconify/react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
+import EmptyContent from "../../components/EmptyContent";
+import EmtyCartImg from "../../images/empty-cart.png"
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -103,12 +105,11 @@ const BillingList = () => {
       <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
         <Card sx={{ borderRadius: 5, p: 3 }}>
           {cartItems?.length === 0 || cartItems === undefined ? (
-            <Typography
-              variant="h4"
-              sx={{ textAlign: "center", color: "#EE2B70", fontWeight: 600 }}
-            >
-              No items found in your cart!
-            </Typography>
+            <EmptyContent
+                  title="Cart is empty"
+                  description="Look like you have no items in your shopping cart."
+                  img={EmtyCartImg}
+                />
           ) : (
             <TableContainer sx={{ minWidth: 500 }}>
               <Table>
