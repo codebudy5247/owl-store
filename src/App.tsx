@@ -8,11 +8,11 @@ import YourOrder from "./pages/Dashboard/Orders";
 import Billings from "./pages/Dashboard/Billings";
 import MerchantDashboard from "./pages/merchant/Dashboard";
 import Withdraw from "../src/pages/merchant/withdraw/withdraw";
-import TotalCards from "./pages/Dashboard/TotalCards";
+import TotalCards from "./pages/merchant/TotalCards";
 import SignupSeller from "./pages/merchant/Auth/Signup";
 import Seller from "./guard/Seller";
 import Checkout from "./pages/Dashboard/Checkout";
-import { ToastContainer, toast } from "react-toastify";
+
 
 function App() {
   return (

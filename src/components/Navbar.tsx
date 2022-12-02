@@ -184,10 +184,42 @@ export default function Header( props:any) {
              marginLeft: "18px",
              color: "black",
            }}
-          //  onClick={onClickCartHandler}
+           onClick={() => navigate("/orders")}
          >
            Order
          </Button>
+         <Button
+           sx={{
+             fontFamily: "Open Sans, sans-serif",
+             fontWeight: 500,
+             size: "15px",
+             marginLeft: "18px",
+             color: "black",
+           }}
+           onClick={() => navigate("/total-cards")}
+         >
+           Cards
+         </Button>
+         <Button
+           sx={{
+             fontFamily: "Open Sans, sans-serif",
+             fontWeight: 500,
+             size: "15px",
+             marginLeft: "18px",
+             color: "black",
+           }}
+           onClick={() => navigate("/merchant-withdraw")}
+         >
+           Withdraw
+         </Button>
+         <ColorButton
+          variant="contained"
+          startIcon={<AccountBalanceWalletIcon />}
+          sx={{ ml: "18px" }}
+        >
+          {" "}
+          $ 0.00
+        </ColorButton>
           </>
         ) : (
           <></>

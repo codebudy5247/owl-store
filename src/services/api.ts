@@ -179,6 +179,24 @@ export async function createCard(payload: AddCardRequestPayload) {
   }
 }
 
+//Get Seller Products
+export async function getSellerCards() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/card/seller_prod`,
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
 //get all cards
 export async function getCards() {
   try {

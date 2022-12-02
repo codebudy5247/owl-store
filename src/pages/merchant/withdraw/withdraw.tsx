@@ -36,12 +36,12 @@ const withdraw = () => {
 
         <Stack spacing={2} sx={{ mt: 2 }}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
-            <TextField
+            {/* <TextField
               fullWidth
               id="base"
               label="Amount to withdraw"
               variant="outlined"
-            />
+            /> */}
             <TextField
               fullWidth
               id="base"
