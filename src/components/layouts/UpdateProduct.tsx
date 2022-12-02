@@ -336,7 +336,10 @@ export default function UpdateDialog(props: any) {
           <Box
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end", p: 3 }}
           >
-            <ColorButton variant="contained" startIcon={ <EditIcon />}> Update</ColorButton>
+            <ColorButton variant="contained" startIcon={<EditIcon />}>
+              {" "}
+              Update
+            </ColorButton>
           </Box>
         </DialogActions>
       </Dialog>

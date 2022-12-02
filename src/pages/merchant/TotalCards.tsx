@@ -23,6 +23,7 @@ import moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateModal from "../../components/layouts/UpdateProduct";
+import { toast } from "react-toastify";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -75,7 +76,20 @@ const TotalCards = () => {
     handleOpen();
   };
 
-  const deleteProduct = async (item: any) => {};
+  const deleteProduct = async (item: any) => {
+    const [error, response] = await Api.deleteCard(item._id);
+    if (error) {
+      toast.error("Something went wrong!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if (response) {
+      getSellerProducts();
+      toast.success("Deleted!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
 
   useEffect(() => {
     getSellerProducts();

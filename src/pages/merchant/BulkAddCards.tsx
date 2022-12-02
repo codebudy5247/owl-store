@@ -9,7 +9,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableHead,
   TableSortLabel,
 } from "@mui/material";
@@ -18,12 +17,12 @@ import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import Modal from "@mui/material/Modal";
 import { Icon } from "@iconify/react";
 import moment from "moment";
 import { AddCardRequestPayload } from "../../services/api";
 import * as Api from "../../services/api";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 var XLSX = require("xlsx");
 
 const style = {
@@ -65,6 +64,7 @@ const displayIcon = (type: any) => {
 };
 
 const BulkAddCards = () => {
+  const navigate = useNavigate()
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [xlsxData, setXlsxData] = useState<any>();
 
@@ -119,7 +119,7 @@ const BulkAddCards = () => {
         });
       }
       if (res) {
-        
+        navigate("/total-cards")
       }
     }
   };

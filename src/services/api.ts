@@ -23,7 +23,7 @@ export interface AddCardRequestPayload {
   socialSecurityNumber: string;
   drivingLicenceNumber: string;
   level: string;
-  class: string;
+  class?: string;
   price: string;
   bankName: string;
   type: string;
@@ -219,6 +219,60 @@ export async function getCard(itemId: string) {
     const axiosConfig: axios.AxiosRequestConfig = {
       method: "get",
       url: `${apiURL}/card/${itemId}`,
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Update Card
+export async function updateCard(id:string,payload: AddCardRequestPayload) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "put",
+      url: `${apiURL}/card/update/${id}`,
+      headers: { Authorization: "Bearer " + token },
+      data: {
+        cardNumber: payload.cardNumber,
+        expiryDate: payload.expiryDate,
+        cvv: payload.cvv,
+        socialSecurityNumber: payload.socialSecurityNumber,
+        drivingLicenceNumber: payload.drivingLicenceNumber,
+        address: {
+          street: payload.street,
+          country: payload.country,
+          state: payload.state,
+          city: payload.city,
+          zip: payload.zip,
+          phoneNo: payload.mobile,
+        },
+        level: payload.level,
+        price: payload.price,
+        bankName: payload.bankName,
+        type: payload.type,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+//Delete Card
+export async function deleteCard(id:string) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "delete",
+      url: `${apiURL}/card/delete/${id}`,
+      headers: { Authorization: "Bearer " + token },
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
