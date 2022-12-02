@@ -198,7 +198,7 @@ export default function Header( props:any) {
            }}
            onClick={() => navigate("/total-cards")}
          >
-           Cards
+           Products
          </Button>
          <Button
            sx={{

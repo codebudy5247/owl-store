@@ -85,7 +85,7 @@ const Dashboard = () => {
     <>
       <Box>
         <Navbar />
-        {home ? <Header title="Home" subtitle="Owl Store > Home" /> : <></>}
+        {home ? <Header title="Dashboard" subtitle="Owl Store > Seller Dashboard" /> : <></>}
         {addCard ? (
           <Header title="Add Cards" subtitle="Owl Store > Add Cards" />
         ) : (
