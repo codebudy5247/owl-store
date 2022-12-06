@@ -12,6 +12,7 @@ import TotalCards from "./pages/merchant/TotalCards";
 import SignupSeller from "./pages/merchant/Auth/Signup";
 import Seller from "./guard/Seller";
 import Checkout from "./pages/Dashboard/Checkout";
+import Wallet from "./pages/Dashboard/Wallet";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/orders" element={<YourOrder />} />
               <Route path="/billings" element={<Billings />} />
+              <Route path="/wallet" element={<Wallet />} />
               <Route path="/checkout" element={<Checkout />} />
             </Route>
             <Route path="/" element={<Seller />}>
