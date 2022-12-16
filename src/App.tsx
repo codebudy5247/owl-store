@@ -13,7 +13,8 @@ import SignupSeller from "./pages/merchant/Auth/Signup";
 import Seller from "./guard/Seller";
 import Checkout from "./pages/Dashboard/Checkout";
 import Wallet from "./pages/Dashboard/Wallet";
-
+import Payment from "./pages/Dashboard/Payment";
+import RedirectPage from "./components/layouts/RedirectPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/billings" element={<Billings />} />
               <Route path="/wallet" element={<Wallet />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment" element={<Payment />} />
             </Route>
             <Route path="/" element={<Seller />}>
               <Route

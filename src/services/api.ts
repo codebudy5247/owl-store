@@ -230,7 +230,7 @@ export async function getCard(itemId: string) {
 }
 
 //Update Card
-export async function updateCard(id:string,payload: AddCardRequestPayload) {
+export async function updateCard(id: string, payload: AddCardRequestPayload) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -266,7 +266,7 @@ export async function updateCard(id:string,payload: AddCardRequestPayload) {
   }
 }
 //Delete Card
-export async function deleteCard(id:string) {
+export async function deleteCard(id: string) {
   try {
     let token: any = localStorage.getItem("authToken");
     const axiosConfig: axios.AxiosRequestConfig = {
@@ -344,3 +344,132 @@ export async function removeItem(itemId: string) {
 }
 
 //create order
+export async function createOrder(
+  items: [],
+  selectedCoin: string,
+  totalPrice: string
+) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/order`,
+      headers: { Authorization: "Bearer " + token },
+      data: {
+        items: items,
+        payWith: selectedCoin,
+        totalPrice: totalPrice,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Create Tx
+export async function createTx(
+  orderID: string,
+  cur1: string,
+  cur2: string,
+  amount: string,
+  buyerEmail: string,
+  buyerName: string
+) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/order/create-tx`,
+      headers: { Authorization: "Bearer " + token },
+      data: {
+        orderId: orderID,
+        cur1: cur1,
+        cur2: cur2,
+        amount: amount,
+        buyers_email: buyerEmail,
+        buyers_name: buyerName,
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Tx information
+export async function txInfo() {
+  try {
+  } catch (error) {}
+}
+
+//Get user orders
+export async function getOrdersUsers() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/order/user-orders`,
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//create deposit api
+export async function createDeposit(
+  amount: string,
+  payWith: string,
+  buyersEmail: string,
+  buyersName: string
+) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/billing`,
+      headers: { Authorization: "Bearer " + token },
+      data: {
+        amount:amount,
+        cur2:payWith,
+        buyers_email:buyersEmail,
+        buyers_name:buyersName
+      },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+
+//Get user billing list
+export async function getBillingsUsers() {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "get",
+      url: `${apiURL}/billing`,
+      headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}

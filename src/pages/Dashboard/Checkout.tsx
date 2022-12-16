@@ -15,6 +15,11 @@ import {
   TableSortLabel,
   CardContent,
 } from "@mui/material";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import React, { useState, useEffect } from "react";
 import Header from "../../components/layouts/Header";
 import Navbar from "../../components/Navbar";
@@ -32,7 +37,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CircularProgress from "@mui/material/CircularProgress";
 import Image from "../../components/Image";
 import CoinPaymentImg from "../../images/coinpayment.png";
-import PerfectMoneyImg from "../../images/perfectmoney.png";
+import { pink } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
@@ -51,27 +57,44 @@ const TABLE_HEAD = [
   { id: "price", label: "Price", alignRight: true },
 ];
 
+const Assets = [
+  {
+    label: "Bitcoin(BTC)",
+    value: "BTC",
+    icon: "cryptocurrency-color:btc",
+  },
+  {
+    label: "Litecoin(LTC)",
+    value: "LTC",
+    icon: "cryptocurrency:ltc",
+  },
+  {
+    label: "USDT(TRC20)",
+    value: "USDT",
+    icon: "cryptocurrency-color:usdt",
+  },
+];
+
 const Checkout = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState<any>();
   const [totalPrice, setTotalPrice] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [payWithCoinPayment, setPayWithCoinPayment] = useState(false);
-  const [payWithPerfectMoney, setPayWithPerfectMoney] = useState(false);
+  const [selectedCoin, setSelectedCoin] = useState("BTC");
+  const [checkout_loading, set_checkout_loading] = useState(false);
 
-  const handleChangePayWithCoinPayment = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPayWithCoinPayment(event.target.checked);
-    setPaymentMethod("coinpayment");
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedCoin((event.target as HTMLInputElement).value);
   };
 
-  const handleChangePayWithPerfectMoney = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPayWithPerfectMoney(event.target.checked);
-    setPaymentMethod("perfectmoney");
-  };
+  const controlProps = (item: string) => ({
+    checked: selectedCoin === item,
+    onChange: handleChange,
+    value: item,
+    name: "color-radio-button-demo",
+    inputProps: { "aria-label": item },
+  });
 
   const getUserCart = async () => {
     const [err, res] = await Api.getCartItems();
@@ -80,12 +103,63 @@ const Checkout = () => {
       setCartItems(res?.data?.cart);
     }
   };
+
+  const getUser = async () => {
+    const [user_err, user_res] = await Api.getUser();
+    if (user_err) {
+      console.log(user_err);
+    }
+    setUser(user_res?.data);
+  };
   useEffect(() => {
     const init = async () => {
       getUserCart();
+      getUser();
     };
     init();
   }, []);
+
+  const handleCheckout = async () => {
+    set_checkout_loading(true);
+    const [create_order_err, create_order_res] = await Api.createOrder(
+      cartItems,
+      selectedCoin,
+      totalPrice
+    );
+    if (create_order_err) {
+      toast.error(create_order_err?.data, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+    if (
+      create_order_res?.status === 201 &&
+      create_order_res?.data?.order?._id
+    ) {
+      const [create_tx_err, create_tx_res] = await Api.createTx(
+        create_order_res?.data?.order?._id,
+        "BTC",
+        selectedCoin,
+        totalPrice,
+        user?.email_id,
+        user?.username
+      );
+      if (create_tx_err) {
+        console.log(create_tx_err);
+        toast.error("Something went wrong.Plz try after sometime.", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      if (create_tx_res) {
+        let checkout_url = create_tx_res?.data?.create_payment?.checkout_url;
+        navigate("/payment", {
+          state: {
+            url: checkout_url,
+          },
+        });
+      }
+    }
+    set_checkout_loading(false);
+  };
 
   const displayIcon = (type: any) => {
     if (type === "master")
@@ -120,12 +194,9 @@ const Checkout = () => {
             <Card sx={{ mb: 3, boxShadow: 5, borderRadius: 3 }}>
               <CardHeader
                 title={
-                  <Typography variant="h6">
+                  <Typography variant="h6" sx={{ color: "#EE2B70" }}>
                     Cart
-                    <Typography
-                      component="span"
-                      sx={{ color: "text.secondary" }}
-                    >
+                    <Typography component="span" sx={{ color: "#EE2B70" }}>
                       &nbsp;({cartItems?.length} item)
                     </Typography>
                   </Typography>
@@ -230,10 +301,16 @@ const Checkout = () => {
 
             {/* Payment OPtions */}
 
-            <Card sx={{ mb: 3, boxShadow: 5, borderRadius: 3 }}>
+            {/* <Card sx={{ mb: 2, boxShadow: 5, borderRadius: 3 }}>
               <CardHeader
-                title={<Typography variant="h6">Payment Options</Typography>}
-                sx={{ mb: 1 }}
+                title={
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#EE2B70", fontWeight: "bold" }}
+                  >
+                    Payment
+                  </Typography>
+                }
               />
               <CardContent>
                 <Box
@@ -246,11 +323,6 @@ const Checkout = () => {
                   }}
                 >
                   <Box sx={{ display: "flex" }}>
-                    <Checkbox
-                      checked={payWithCoinPayment}
-                      onChange={handleChangePayWithCoinPayment}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
                     <Box>
                       <Typography variant="subtitle2">
                         Pay with Coin Payment
@@ -275,49 +347,43 @@ const Checkout = () => {
                     />
                   </Box>
                 </Box>
-
-                <Box
-                  sx={{
-                    border: "1px solid gray",
-                    borderRadius: 2,
-                    p: 2,
-                    mt: 2,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box sx={{ display: "flex" }}>
-                    <Checkbox
-                      checked={payWithPerfectMoney}
-                      onChange={handleChangePayWithPerfectMoney}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                    <Box>
-                      <Typography variant="subtitle2">
-                        Pay with Perfect Money
+                <Box sx={{ display: "flex", mt: 1 }}>
+                  <FormControl>
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      <Typography variant="h6" sx={{ mt: 2, color: "#EE2B70" }}>
+                        Select coin to pay
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                      >
-                        You will be redirected to PerfectMoney website to
-                        complete your purchase securely
-                      </Typography>
-                    </Box>
-                  </Box>
-
-                  <Box>
-                    <Image
-                      disabledEffect
-                      visibleByDefault
-                      alt="coin payment"
-                      src={PerfectMoneyImg}
-                      sx={{ height: 40 }}
-                    />
-                  </Box>
+                    </FormLabel>
+                    <RadioGroup
+                      {...controlProps("e")}
+                      sx={{
+                        color: pink[800],
+                        "&.Mui-checked": {
+                          color: pink[600],
+                        },
+                      }}
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={selectedCoin}
+                      onChange={handleChange}
+                    >
+                      {Assets.map((asset) => (
+                        <Box sx={{ display: "flex", mt: 2 }}>
+                          <FormControlLabel
+                            value={asset?.value}
+                            control={<Radio />}
+                            label={asset?.label}
+                          />
+                          <Box sx={{ mt: 1 }}>
+                            <Icon icon={asset?.icon} width={30} height={30} />
+                          </Box>
+                        </Box>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
                 </Box>
               </CardContent>
-            </Card>
+            </Card> */}
 
             <ColorButton startIcon={<Icon icon={"eva:arrow-ios-back-fill"} />}>
               Continue Shopping
@@ -330,16 +396,28 @@ const Checkout = () => {
               totalItems={cartItems?.length}
               totalPrice={totalPrice}
             />
-
-            <ColorButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              disabled={cartItems?.length === 0 || cartItems === undefined}
-            >
-              Check Out
-            </ColorButton>
+            {checkout_loading ? (
+              <ColorButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                disabled={cartItems?.length === 0 || cartItems === undefined}
+              >
+                <CircularProgress />
+              </ColorButton>
+            ) : (
+              <ColorButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                disabled={cartItems?.length === 0 || cartItems === undefined}
+                onClick={handleCheckout}
+              >
+                Check Out
+              </ColorButton>
+            )}
           </Grid>
         </Grid>
       </Container>

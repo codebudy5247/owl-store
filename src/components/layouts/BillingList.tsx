@@ -19,12 +19,13 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import * as Api from "../../services/api";
 import moment from "moment";
 import { Icon } from "@iconify/react";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { toast } from "react-toastify";
-import CircularProgress from "@mui/material/CircularProgress";
 import EmptyContent from "../../components/EmptyContent";
-import EmtyCartImg from "../../images/empty-cart.png"
-
+import EmtyTxImg from "../../images/tximg.png";
+import LinkIcon from "@mui/icons-material/Link";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
+import CloseIcon from "@mui/icons-material/Close";
+import DepositMoney from "./DepositMoney";
+import RefreshIcon from "@mui/icons-material/Refresh";
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
   backgroundColor: "#FDE7EF",
@@ -35,55 +36,71 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const TABLE_HEAD = [
-  { id: "bin", label: "Bin", alignRight: false },
-  { id: "base", label: "Base", alignRight: false },
-  { id: "zip", label: "Zip", alignRight: false },
-  { id: "city", label: "City", alignRight: true },
-  { id: "state", label: "State", alignRight: true },
-  { id: "country", label: "Country", alignRight: true },
-  { id: "price", label: "Price", alignRight: true },
+  // { id: "id", label: "Billing Id", alignRight: false },
+  { id: "txid", label: "Transaction Id", alignRight: false },
+  { id: "createdAt", label: "Deposit Date", alignRight: false },
+  { id: "paymentApproved", label: "Payment Approved", alignRight: false },
+  { id: "amount", label: "Amount", alignRight: true },
+  { id: "recipientAddress", label: "Recipient Address", alignRight: true },
+  { id: "checkoutUrl", label: "Deposit Url", alignRight: true },
+  { id: "statusUrl", label: "Status Url", alignRight: true },
+  { id: "payWith", label: "Pay With", alignRight: true },
 ];
 
 const BillingList = () => {
-  const [cartItems, setCartItems] = useState<any>();
+  const [billings, setBillings] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const getUserCart = async () => {
-    const [err, res] = await Api.getCartItems();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const getUserBillings = async () => {
+    const [err, res] = await Api.getBillingsUsers();
     if (res) {
-      setCartItems(res?.data?.cart);
+      setBillings(res?.data);
+      // let sortedList = res?.data?.sort((a: any, b: any) => {
+      //   moment(a?.createdAt)
+      //     .format("'MM/DD/YYYY'")
+      //     .split("/")
+      //     .reverse()
+      //     .join()
+      //     .localeCompare(
+      //       moment(b?.createdAt)
+      //         .format("'MM/DD/YYYY'")
+      //         .split("/")
+      //         .reverse()
+      //         .join()
+      //     );
+      // });
+      // setBillings(sortedList)
+      // console.log({sortedList});
+      
     }
   };
 
+  // let sortedCars1 = cars.sort((a, b) =>
+  //   a.initialRegistration
+  //     .split("/")
+  //     .reverse()
+  //     .join()
+  //     .localeCompare(b.initialRegistration.split("/").reverse().join())
+  // );
+
+  const displayIcon = (type: any) => {
+    if (type === "BTC")
+      return <Icon icon="cryptocurrency-color:btc" height={40} width={40} />;
+    if (type === "LTC")
+      return <Icon icon="cryptocurrency:ltc" height={40} width={40} />;
+    if (type === "USDT")
+      return <Icon icon="cryptocurrency-color:usdt" height={40} width={40} />;
+  };
   useEffect(() => {
     const init = async () => {
-      getUserCart();
+      getUserBillings();
     };
     init();
   }, []);
-
-  const removeFromCart = async (itemID: any) => {
-    setLoading(true);
-    const [error, response] = await Api.removeItem(itemID);
-    if (error) {
-      toast.error("Something went wrong.Plz try after sometime.", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-    if (response?.status === 200) {
-      getUserCart();
-      toast.info(response?.data?.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-    setLoading(false);
-  };
-
-  const displayIcon = (type: any) => {
-    if (type === "master")
-      return <Icon icon="logos:mastercard" height={40} width={40} />;
-    if (type === "visa")
-      return <Icon icon="logos:visa" height={40} width={40} />;
-  };
 
   return (
     <Box>
@@ -96,20 +113,34 @@ const BillingList = () => {
         }}
       >
         <Box>
-          <ColorButton variant="contained" startIcon={<AddIcon />}>
+          <ColorButton
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleOpen}
+          >
             {" "}
             Add Money
           </ColorButton>
         </Box>
       </Box>
+
       <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <ColorButton
+            variant="contained"
+            startIcon={<RefreshIcon />}
+            onClick={getUserBillings}
+          >
+            Refresh
+          </ColorButton>
+        </Box>
         <Card sx={{ borderRadius: 5, p: 3 }}>
-          {cartItems?.length === 0 || cartItems === undefined ? (
+          {billings?.length === 0 || billings === undefined ? (
             <EmptyContent
-                  title="Cart is empty"
-                  description="Look like you have no items in your shopping cart."
-                  img={EmtyCartImg}
-                />
+              title="You haven't deposit any amount yet!"
+              description="Billing section is empty. After deposit, You can see your transaction list here!"
+              img={EmtyTxImg}
+            />
           ) : (
             <TableContainer sx={{ minWidth: 500 }}>
               <Table>
@@ -118,24 +149,28 @@ const BillingList = () => {
                     {TABLE_HEAD?.map((headCell) => (
                       <TableCell key={headCell.id}>
                         <TableSortLabel hideSortIcon>
-                          {headCell.label}
+                          <Typography
+                            variant="body1"
+                            sx={{ fontWeight: "bold" }}
+                          >
+                            {headCell.label}
+                          </Typography>
                         </TableSortLabel>
                       </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems?.map((card: any) => (
+                  {billings?.map((billing: any) => (
                     <>
-                      <TableRow key={card?.itemId?._id}>
-                        <TableCell sx={{ display: "flex" }}>
-                          {displayIcon(card.itemId.type)}
+                      <TableRow key={billing._id}>
+                        <TableCell sx={{}}>
                           <Typography
                             variant="subtitle2"
                             noWrap
-                            sx={{ ml: 1, mt: 1 }}
+                            sx={{ fontSize: "medium" }}
                           >
-                            {card?.itemId?.cardNumber?.slice(0, 6)}
+                            {billing?.txId?.slice(0, 8)} ...
                           </Typography>
                         </TableCell>
                         <TableCell sx={{ p: 2 }}>
@@ -146,51 +181,60 @@ const BillingList = () => {
                               textAlign: "center",
                             }}
                           >
-                            <Typography variant="subtitle2" noWrap>
-                              {moment(card?.itemId?.base).format("MMMM YY")}
+                            <Typography
+                              variant="subtitle2"
+                              noWrap
+                              sx={{ fontSize: "medium" }}
+                            >
+                              {moment(billing?.createdAt).format(
+                                "DD-MM-YYYY,h:mm a"
+                              )}
                             </Typography>
                           </Box>
                         </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" noWrap>
-                            {card?.itemId?.address?.zip}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" noWrap>
-                            {card?.itemId?.address?.city}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" noWrap>
-                            {card?.itemId?.address?.state}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <img
-                            loading="lazy"
-                            width="50"
-                            height="25"
-                            src={`https://countryflagsapi.com/png/${card?.itemId?.address?.country?.toLowerCase()}`}
-                            alt=""
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="subtitle2" noWrap>
-                            {card?.itemId?.price}
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ cursor: "pointer" }}>
-                          <ColorButton
-                            variant="contained"
-                            onClick={() => removeFromCart(card?.itemId?._id)}
+                        <TableCell sx={{}}>
+                          <Typography
+                            variant="subtitle2"
+                            noWrap
+                            sx={{ fontSize: "medium" }}
                           >
-                            {loading ? (
-                              <CircularProgress />
+                            {billing?.paymentApproved ? (
+                              <DownloadDoneIcon />
                             ) : (
-                              <DeleteOutlineIcon />
+                              <CloseIcon />
                             )}
-                          </ColorButton>
+                          </Typography>
+                        </TableCell>
+                        <TableCell sx={{}}>
+                          <Typography
+                            variant="subtitle2"
+                            noWrap
+                            sx={{ fontSize: "medium" }}
+                          >
+                            {billing?.payWith} {billing?.amount}
+                          </Typography>
+                        </TableCell>
+                        <TableCell sx={{}}>
+                          <Typography
+                            variant="subtitle2"
+                            noWrap
+                            sx={{ fontSize: "medium" }}
+                          >
+                            {billing?.recipientAddress.slice(0, 8)}...
+                          </Typography>
+                        </TableCell>
+                        <TableCell sx={{}}>
+                          <a href={billing?.checkoutUrl}>
+                            <LinkIcon />
+                          </a>
+                        </TableCell>
+                        <TableCell sx={{}}>
+                          <a href={billing?.statusUrl}>
+                            <LinkIcon />
+                          </a>
+                        </TableCell>
+                        <TableCell sx={{}}>
+                          {displayIcon(billing?.payWith)}
                         </TableCell>
                       </TableRow>
                     </>
@@ -201,6 +245,11 @@ const BillingList = () => {
           )}
         </Card>
       </Container>
+      <DepositMoney
+        open={open}
+        handleClose={handleClose}
+        getUserBillings={getUserBillings}
+      />
     </Box>
   );
 };

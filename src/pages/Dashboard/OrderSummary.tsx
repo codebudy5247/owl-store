@@ -10,7 +10,7 @@ import {
 const OrderSummary = (props:any) => {
   return (
     <Card sx={{ mb: 3,boxShadow: 5,borderRadius:3 }}>
-      <CardHeader title="Order Summary" />
+      <CardHeader title="Order Summary"  sx={{ color: "#EE2B70" }}/>
       <CardContent>
         <Stack spacing={2}>
           <Stack direction="row" justifyContent="space-between">
