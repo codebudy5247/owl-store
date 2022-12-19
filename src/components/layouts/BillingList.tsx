@@ -22,10 +22,10 @@ import { Icon } from "@iconify/react";
 import EmptyContent from "../../components/EmptyContent";
 import EmtyTxImg from "../../images/tximg.png";
 import LinkIcon from "@mui/icons-material/Link";
-import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
-import CloseIcon from "@mui/icons-material/Close";
 import DepositMoney from "./DepositMoney";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import DisplayBillingStatus from "../DisplayBillingStatus";
+import DisplayBillingExpiryTime from "../DisplayBillingExpiryTime";
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "#EE2B70",
   backgroundColor: "#FDE7EF",
@@ -40,11 +40,13 @@ const TABLE_HEAD = [
   { id: "txid", label: "Transaction Id", alignRight: false },
   { id: "createdAt", label: "Deposit Date", alignRight: false },
   { id: "paymentApproved", label: "Payment Approved", alignRight: false },
-  { id: "amount", label: "Amount", alignRight: true },
+  { id: "amount", label: "Amount to pay", alignRight: true },
   { id: "recipientAddress", label: "Recipient Address", alignRight: true },
   { id: "checkoutUrl", label: "Deposit Url", alignRight: true },
   { id: "statusUrl", label: "Status Url", alignRight: true },
   { id: "payWith", label: "Pay With", alignRight: true },
+  // { id: "expiry", label: "Expire time", alignRight: true },
+  { id: "status", label: "Payment status", alignRight: true },
 ];
 
 const BillingList = () => {
@@ -75,17 +77,8 @@ const BillingList = () => {
       // });
       // setBillings(sortedList)
       // console.log({sortedList});
-      
     }
   };
-
-  // let sortedCars1 = cars.sort((a, b) =>
-  //   a.initialRegistration
-  //     .split("/")
-  //     .reverse()
-  //     .join()
-  //     .localeCompare(b.initialRegistration.split("/").reverse().join())
-  // );
 
   const displayIcon = (type: any) => {
     if (type === "BTC")
@@ -98,6 +91,7 @@ const BillingList = () => {
   useEffect(() => {
     const init = async () => {
       getUserBillings();
+      // fetchTxInfo()
     };
     init();
   }, []);
@@ -142,7 +136,7 @@ const BillingList = () => {
               img={EmtyTxImg}
             />
           ) : (
-            <TableContainer sx={{ minWidth: 500 }}>
+            <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -198,11 +192,12 @@ const BillingList = () => {
                             noWrap
                             sx={{ fontSize: "medium" }}
                           >
-                            {billing?.paymentApproved ? (
+                            {/* {billing?.paymentApproved ? (
                               <DownloadDoneIcon />
                             ) : (
                               <CloseIcon />
-                            )}
+                            )} */}
+                            {billing?.paymentApproved}
                           </Typography>
                         </TableCell>
                         <TableCell sx={{}}>
@@ -220,7 +215,7 @@ const BillingList = () => {
                             noWrap
                             sx={{ fontSize: "medium" }}
                           >
-                            {billing?.recipientAddress.slice(0, 8)}...
+                            {billing?.recipientAddress}
                           </Typography>
                         </TableCell>
                         <TableCell sx={{}}>
@@ -234,8 +229,24 @@ const BillingList = () => {
                           </a>
                         </TableCell>
                         <TableCell sx={{}}>
+                          
                           {displayIcon(billing?.payWith)}
+                          
                         </TableCell>
+                        {/* <TableCell sx={{}}>
+                        <DisplayBillingExpiryTime txID={billing?.txId} />
+                        </TableCell> */}
+                        <TableCell sx={{}}>
+                        <DisplayBillingStatus txID={billing?.txId} />
+                        </TableCell>
+                        {/* <TableCell>
+                          <ColorButton
+                            variant="contained"
+                            // onClick={getUserBillings}
+                          >
+                            <Icon icon="ci:refresh-02" height={40} width={40} />
+                          </ColorButton>
+                        </TableCell> */}
                       </TableRow>
                     </>
                   ))}

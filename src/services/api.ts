@@ -403,12 +403,6 @@ export async function createTx(
   }
 }
 
-//Tx information
-export async function txInfo() {
-  try {
-  } catch (error) {}
-}
-
 //Get user orders
 export async function getOrdersUsers() {
   try {
@@ -464,6 +458,26 @@ export async function getBillingsUsers() {
       method: "get",
       url: `${apiURL}/billing`,
       headers: { Authorization: "Bearer " + token },
+    };
+    const response = await axios.default.request(axiosConfig);
+    const normalizedResponse = normalizeServerResponse(response);
+    return [null, normalizedResponse];
+  } catch (error) {
+    const errorObject = normalizeServerError(error);
+    return [errorObject, null];
+  }
+}
+//Get Tx info
+export async function getTxInfo(txId:string) {
+  try {
+    let token: any = localStorage.getItem("authToken");
+    const axiosConfig: axios.AxiosRequestConfig = {
+      method: "post",
+      url: `${apiURL}/billing/tx-info`,
+      headers: { Authorization: "Bearer " + token },
+      data:{
+        txID:txId
+      }
     };
     const response = await axios.default.request(axiosConfig);
     const normalizedResponse = normalizeServerResponse(response);
