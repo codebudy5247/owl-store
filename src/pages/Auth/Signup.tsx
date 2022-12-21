@@ -52,9 +52,10 @@ const Signup = () => {
       });
     }
     if (signUpResponse) {
-      console.log({ signUpResponse });
+      console.log( signUpResponse?.data?.result);
       localStorage.setItem("authToken", signUpResponse?.data?.token);
       localStorage.setItem("userRole", signUpResponse?.data?.result?.role);
+      localStorage.setItem("approvedByAdmin", signUpResponse?.data?.result?.approvedByAdmin);
       navigate("/");
       toast.success("Register Success !", {
         position: toast.POSITION.TOP_RIGHT,

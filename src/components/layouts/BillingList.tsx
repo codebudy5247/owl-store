@@ -42,7 +42,7 @@ const TABLE_HEAD = [
   { id: "paymentApproved", label: "Payment Approved", alignRight: false },
   { id: "amount", label: "Amount to pay", alignRight: true },
   { id: "recipientAddress", label: "Recipient Address", alignRight: true },
-  { id: "checkoutUrl", label: "Deposit Url", alignRight: true },
+  { id: "checkoutUrl", label: "Deposit Url", alignRight: false },
   { id: "statusUrl", label: "Status Url", alignRight: true },
   { id: "payWith", label: "Pay With", alignRight: true },
   // { id: "expiry", label: "Expire time", alignRight: true },
@@ -218,9 +218,10 @@ const BillingList = () => {
                             {billing?.recipientAddress}
                           </Typography>
                         </TableCell>
-                        <TableCell sx={{}}>
+                        <TableCell>
                           <a href={billing?.checkoutUrl}>
-                            <LinkIcon />
+                            {/* <LinkIcon /> */}
+                            Go to this Link to complete your payment.
                           </a>
                         </TableCell>
                         <TableCell sx={{}}>
@@ -239,14 +240,6 @@ const BillingList = () => {
                         <TableCell sx={{}}>
                         <DisplayBillingStatus txID={billing?.txId} />
                         </TableCell>
-                        {/* <TableCell>
-                          <ColorButton
-                            variant="contained"
-                            // onClick={getUserBillings}
-                          >
-                            <Icon icon="ci:refresh-02" height={40} width={40} />
-                          </ColorButton>
-                        </TableCell> */}
                       </TableRow>
                     </>
                   ))}

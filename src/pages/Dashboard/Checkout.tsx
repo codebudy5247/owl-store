@@ -131,33 +131,33 @@ const Checkout = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
-    if (
-      create_order_res?.status === 201 &&
-      create_order_res?.data?.order?._id
-    ) {
-      const [create_tx_err, create_tx_res] = await Api.createTx(
-        create_order_res?.data?.order?._id,
-        "BTC",
-        selectedCoin,
-        totalPrice,
-        user?.email_id,
-        user?.username
-      );
-      if (create_tx_err) {
-        console.log(create_tx_err);
-        toast.error("Something went wrong.Plz try after sometime.", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-      if (create_tx_res) {
-        let checkout_url = create_tx_res?.data?.create_payment?.checkout_url;
-        navigate("/payment", {
-          state: {
-            url: checkout_url,
-          },
-        });
-      }
-    }
+    // if (
+    //   create_order_res?.status === 201 &&
+    //   create_order_res?.data?.order?._id
+    // ) {
+    //   const [create_tx_err, create_tx_res] = await Api.createTx(
+    //     create_order_res?.data?.order?._id,
+    //     "BTC",
+    //     selectedCoin,
+    //     totalPrice,
+    //     user?.email_id,
+    //     user?.username
+    //   );
+    //   if (create_tx_err) {
+    //     console.log(create_tx_err);
+    //     toast.error("Something went wrong.Plz try after sometime.", {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //     });
+    //   }
+    //   if (create_tx_res) {
+    //     let checkout_url = create_tx_res?.data?.create_payment?.checkout_url;
+    //     navigate("/payment", {
+    //       state: {
+    //         url: checkout_url,
+    //       },
+    //     });
+    //   }
+    // }
     set_checkout_loading(false);
   };
 

@@ -48,6 +48,7 @@ const Signin = () => {
       console.log(signInResponse);
       localStorage.setItem("authToken", signInResponse?.data?.token);
       localStorage.setItem("userRole", signInResponse?.data?.oldUser?.role);
+      localStorage.setItem("approvedByAdmin", signInResponse?.data?.oldUser?.approvedByAdmin);
       navigate("/");
       toast.success("Login Success !", {
         position: toast.POSITION.TOP_RIGHT,
